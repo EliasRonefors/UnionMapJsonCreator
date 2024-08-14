@@ -59,7 +59,6 @@
             pictureBox1.Size = new Size(960, 540);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
             pictureBox1.MouseDown += pictureBox1_MouseDown;
             // 
             // textBox1
@@ -68,7 +67,6 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(130, 23);
             textBox1.TabIndex = 1;
-            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // label1
             // 
@@ -97,7 +95,6 @@
             listBox1.Name = "listBox1";
             listBox1.Size = new Size(150, 109);
             listBox1.TabIndex = 6;
-            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // textBox2
             // 
@@ -105,7 +102,6 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(130, 23);
             textBox2.TabIndex = 7;
-            textBox2.TextChanged += textBox2_TextChanged;
             // 
             // button1
             // 
@@ -125,7 +121,6 @@
             label3.Size = new Size(0, 15);
             label3.TabIndex = 9;
             label3.TextChanged += label3_TextChanged;
-            label3.Click += label3_Click;
             // 
             // listBox2
             // 
@@ -135,7 +130,6 @@
             listBox2.Name = "listBox2";
             listBox2.Size = new Size(130, 154);
             listBox2.TabIndex = 10;
-            listBox2.SelectedIndexChanged += listBox2_SelectedIndexChanged;
             // 
             // button2
             // 
@@ -162,7 +156,6 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(130, 23);
             textBox3.TabIndex = 13;
-            textBox3.TextChanged += textBox3_TextChanged;
             // 
             // listBox3
             // 
@@ -172,7 +165,6 @@
             listBox3.Name = "listBox3";
             listBox3.Size = new Size(150, 109);
             listBox3.TabIndex = 14;
-            listBox3.SelectedIndexChanged += listBox3_SelectedIndexChanged;
             // 
             // textBox4
             // 
@@ -180,7 +172,6 @@
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(130, 23);
             textBox4.TabIndex = 15;
-            textBox4.TextChanged += textBox4_TextChanged;
             // 
             // button3
             // 
@@ -198,7 +189,6 @@
             textBox5.Name = "textBox5";
             textBox5.Size = new Size(130, 23);
             textBox5.TabIndex = 17;
-            textBox5.TextChanged += textBox5_TextChanged;
             // 
             // button4
             // 

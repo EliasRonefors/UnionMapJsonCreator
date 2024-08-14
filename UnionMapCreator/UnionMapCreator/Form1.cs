@@ -18,7 +18,7 @@ namespace UnionMapCreator
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Image image = Image.FromFile(@"C:\Users\aldin\Documents\UnionMapCreator\UnionMapCreator\UnionMap.png");
+            Image image = Image.FromFile(@"UnionMap.png");
 
             pictureBox1.Image = image;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -218,52 +218,6 @@ namespace UnionMapCreator
             File.WriteAllText(filePath, jsonString);
 
             MessageBox.Show("File saved successfully at " + filePath);
-        }
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox3_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox3_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
         }
     }
 }
