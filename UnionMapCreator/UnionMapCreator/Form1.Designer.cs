@@ -29,25 +29,25 @@
         private void InitializeComponent()
         {
             pictureBox1 = new PictureBox();
-            textBox1 = new TextBox();
+            NodeNameBox = new TextBox();
             label1 = new Label();
-            label2 = new Label();
-            listBox1 = new ListBox();
-            textBox2 = new TextBox();
-            button1 = new Button();
-            label3 = new Label();
-            listBox2 = new ListBox();
-            button2 = new Button();
+            ContinentLabel = new Label();
+            AdjecentNodeList = new ListBox();
+            ContinentNameBox = new TextBox();
+            CreateButton = new Button();
+            CurrentNodeLabel = new Label();
+            ContinentListBox = new ListBox();
+            CancelButton = new Button();
             label4 = new Label();
-            textBox3 = new TextBox();
-            listBox3 = new ListBox();
-            textBox4 = new TextBox();
-            button3 = new Button();
-            textBox5 = new TextBox();
-            button4 = new Button();
+            NodeConnectedBox = new TextBox();
+            ConnectedContinentsList = new ListBox();
+            AddContinentNameBox = new TextBox();
+            AddContinentButton = new Button();
+            ContinentTroopBox = new TextBox();
+            CreateFileButton = new Button();
             label5 = new Label();
             label6 = new Label();
-            label7 = new Label();
+            NodeLabel = new Label();
             label8 = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
@@ -61,12 +61,12 @@
             pictureBox1.TabStop = false;
             pictureBox1.MouseDown += pictureBox1_MouseDown;
             // 
-            // textBox1
+            // NodeNameBox
             // 
-            textBox1.Location = new Point(1122, 54);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(130, 23);
-            textBox1.TabIndex = 1;
+            NodeNameBox.Location = new Point(1122, 54);
+            NodeNameBox.Name = "NodeNameBox";
+            NodeNameBox.Size = new Size(130, 23);
+            NodeNameBox.TabIndex = 1;
             // 
             // label1
             // 
@@ -77,69 +77,69 @@
             label1.TabIndex = 4;
             label1.Text = "Name:";
             // 
-            // label2
+            // ContinentLabel
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label2.Location = new Point(978, 12);
-            label2.Name = "label2";
-            label2.Size = new Size(105, 15);
-            label2.TabIndex = 5;
-            label2.Text = "Create Continent:";
+            ContinentLabel.AutoSize = true;
+            ContinentLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            ContinentLabel.Location = new Point(978, 12);
+            ContinentLabel.Name = "ContinentLabel";
+            ContinentLabel.Size = new Size(105, 15);
+            ContinentLabel.TabIndex = 5;
+            ContinentLabel.Text = "Create Continent:";
             // 
-            // listBox1
+            // AdjecentNodeList
             // 
-            listBox1.FormattingEnabled = true;
-            listBox1.ItemHeight = 15;
-            listBox1.Location = new Point(197, 558);
-            listBox1.Name = "listBox1";
-            listBox1.Size = new Size(150, 109);
-            listBox1.TabIndex = 6;
+            AdjecentNodeList.FormattingEnabled = true;
+            AdjecentNodeList.ItemHeight = 15;
+            AdjecentNodeList.Location = new Point(197, 558);
+            AdjecentNodeList.Name = "AdjecentNodeList";
+            AdjecentNodeList.Size = new Size(150, 109);
+            AdjecentNodeList.TabIndex = 6;
             // 
-            // textBox2
+            // ContinentNameBox
             // 
-            textBox2.Location = new Point(984, 54);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(130, 23);
-            textBox2.TabIndex = 7;
+            ContinentNameBox.Location = new Point(984, 54);
+            ContinentNameBox.Name = "ContinentNameBox";
+            ContinentNameBox.Size = new Size(130, 23);
+            ContinentNameBox.TabIndex = 7;
             // 
-            // button1
+            // CreateButton
             // 
-            button1.Location = new Point(1039, 127);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 8;
-            button1.Text = "Create";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            CreateButton.Location = new Point(1039, 127);
+            CreateButton.Name = "CreateButton";
+            CreateButton.Size = new Size(75, 23);
+            CreateButton.TabIndex = 8;
+            CreateButton.Text = "Create";
+            CreateButton.UseVisualStyleBackColor = true;
+            CreateButton.Click += CreateButton_Click;
             // 
-            // label3
+            // CurrentNodeLabel
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(12, 559);
-            label3.Name = "label3";
-            label3.Size = new Size(0, 15);
-            label3.TabIndex = 9;
-            label3.TextChanged += label3_TextChanged;
+            CurrentNodeLabel.AutoSize = true;
+            CurrentNodeLabel.Location = new Point(12, 559);
+            CurrentNodeLabel.Name = "CurrentNodeLabel";
+            CurrentNodeLabel.Size = new Size(0, 15);
+            CurrentNodeLabel.TabIndex = 9;
+            CurrentNodeLabel.TextChanged += CurrentNodeLabel_TextChanged;
             // 
-            // listBox2
+            // ContinentListBox
             // 
-            listBox2.FormattingEnabled = true;
-            listBox2.ItemHeight = 15;
-            listBox2.Location = new Point(984, 160);
-            listBox2.Name = "listBox2";
-            listBox2.Size = new Size(130, 154);
-            listBox2.TabIndex = 10;
+            ContinentListBox.FormattingEnabled = true;
+            ContinentListBox.ItemHeight = 15;
+            ContinentListBox.Location = new Point(984, 160);
+            ContinentListBox.Name = "ContinentListBox";
+            ContinentListBox.Size = new Size(130, 154);
+            ContinentListBox.TabIndex = 10;
             // 
-            // button2
+            // CancelButton
             // 
-            button2.Location = new Point(12, 577);
-            button2.Name = "button2";
-            button2.Size = new Size(75, 23);
-            button2.TabIndex = 11;
-            button2.Text = "Cancel";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            CancelButton.Location = new Point(12, 577);
+            CancelButton.Name = "CancelButton";
+            CancelButton.Size = new Size(75, 23);
+            CancelButton.TabIndex = 11;
+            CancelButton.Text = "Cancel";
+            CancelButton.UseVisualStyleBackColor = true;
+            CancelButton.Click += CancelButton_Click;
             // 
             // label4
             // 
@@ -150,55 +150,55 @@
             label4.TabIndex = 12;
             label4.Text = "connected Continent";
             // 
-            // textBox3
+            // NodeConnectedBox
             // 
-            textBox3.Location = new Point(1122, 98);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(130, 23);
-            textBox3.TabIndex = 13;
+            NodeConnectedBox.Location = new Point(1122, 98);
+            NodeConnectedBox.Name = "NodeConnectedBox";
+            NodeConnectedBox.Size = new Size(130, 23);
+            NodeConnectedBox.TabIndex = 13;
             // 
-            // listBox3
+            // ConnectedContinentsList
             // 
-            listBox3.FormattingEnabled = true;
-            listBox3.ItemHeight = 15;
-            listBox3.Location = new Point(353, 558);
-            listBox3.Name = "listBox3";
-            listBox3.Size = new Size(150, 109);
-            listBox3.TabIndex = 14;
+            ConnectedContinentsList.FormattingEnabled = true;
+            ConnectedContinentsList.ItemHeight = 15;
+            ConnectedContinentsList.Location = new Point(353, 558);
+            ConnectedContinentsList.Name = "ConnectedContinentsList";
+            ConnectedContinentsList.Size = new Size(150, 109);
+            ConnectedContinentsList.TabIndex = 14;
             // 
-            // textBox4
+            // AddContinentNameBox
             // 
-            textBox4.Location = new Point(1122, 178);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(130, 23);
-            textBox4.TabIndex = 15;
+            AddContinentNameBox.Location = new Point(1122, 178);
+            AddContinentNameBox.Name = "AddContinentNameBox";
+            AddContinentNameBox.Size = new Size(130, 23);
+            AddContinentNameBox.TabIndex = 15;
             // 
-            // button3
+            // AddContinentButton
             // 
-            button3.Location = new Point(1177, 207);
-            button3.Name = "button3";
-            button3.Size = new Size(75, 23);
-            button3.TabIndex = 16;
-            button3.Text = "Add";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            AddContinentButton.Location = new Point(1177, 207);
+            AddContinentButton.Name = "AddContinentButton";
+            AddContinentButton.Size = new Size(75, 23);
+            AddContinentButton.TabIndex = 16;
+            AddContinentButton.Text = "Add";
+            AddContinentButton.UseVisualStyleBackColor = true;
+            AddContinentButton.Click += AddContinentButton_Click;
             // 
-            // textBox5
+            // ContinentTroopBox
             // 
-            textBox5.Location = new Point(984, 98);
-            textBox5.Name = "textBox5";
-            textBox5.Size = new Size(130, 23);
-            textBox5.TabIndex = 17;
+            ContinentTroopBox.Location = new Point(984, 98);
+            ContinentTroopBox.Name = "ContinentTroopBox";
+            ContinentTroopBox.Size = new Size(130, 23);
+            ContinentTroopBox.TabIndex = 17;
             // 
-            // button4
+            // CreateFileButton
             // 
-            button4.Location = new Point(1177, 646);
-            button4.Name = "button4";
-            button4.Size = new Size(75, 23);
-            button4.TabIndex = 18;
-            button4.Text = "Create File";
-            button4.UseVisualStyleBackColor = true;
-            button4.Click += button4_Click;
+            CreateFileButton.Location = new Point(1177, 646);
+            CreateFileButton.Name = "CreateFileButton";
+            CreateFileButton.Size = new Size(75, 23);
+            CreateFileButton.TabIndex = 18;
+            CreateFileButton.Text = "Create File";
+            CreateFileButton.UseVisualStyleBackColor = true;
+            CreateFileButton.Click += CreateFileButton_Click;
             // 
             // label5
             // 
@@ -218,15 +218,15 @@
             label6.TabIndex = 20;
             label6.Text = "Troop Bonus:";
             // 
-            // label7
+            // NodeLabel
             // 
-            label7.AutoSize = true;
-            label7.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
-            label7.Location = new Point(1122, 12);
-            label7.Name = "label7";
-            label7.Size = new Size(43, 15);
-            label7.TabIndex = 21;
-            label7.Text = "Node: ";
+            NodeLabel.AutoSize = true;
+            NodeLabel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point);
+            NodeLabel.Location = new Point(1122, 12);
+            NodeLabel.Name = "NodeLabel";
+            NodeLabel.Size = new Size(43, 15);
+            NodeLabel.TabIndex = 21;
+            NodeLabel.Text = "Node: ";
             // 
             // label8
             // 
@@ -243,25 +243,25 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 681);
             Controls.Add(label8);
-            Controls.Add(label7);
+            Controls.Add(NodeLabel);
             Controls.Add(label6);
             Controls.Add(label5);
-            Controls.Add(button4);
-            Controls.Add(textBox5);
-            Controls.Add(button3);
-            Controls.Add(textBox4);
-            Controls.Add(listBox3);
-            Controls.Add(textBox3);
+            Controls.Add(CreateFileButton);
+            Controls.Add(ContinentTroopBox);
+            Controls.Add(AddContinentButton);
+            Controls.Add(AddContinentNameBox);
+            Controls.Add(ConnectedContinentsList);
+            Controls.Add(NodeConnectedBox);
             Controls.Add(label4);
-            Controls.Add(button2);
-            Controls.Add(listBox2);
-            Controls.Add(label3);
-            Controls.Add(button1);
-            Controls.Add(textBox2);
-            Controls.Add(listBox1);
-            Controls.Add(label2);
+            Controls.Add(CancelButton);
+            Controls.Add(ContinentListBox);
+            Controls.Add(CurrentNodeLabel);
+            Controls.Add(CreateButton);
+            Controls.Add(ContinentNameBox);
+            Controls.Add(AdjecentNodeList);
+            Controls.Add(ContinentLabel);
             Controls.Add(label1);
-            Controls.Add(textBox1);
+            Controls.Add(NodeNameBox);
             Controls.Add(pictureBox1);
             Name = "Form1";
             Text = "Form1";
@@ -274,25 +274,25 @@
         #endregion
 
         private PictureBox pictureBox1;
-        private TextBox textBox1;
+        private TextBox NodeNameBox;
         private Label label1;
-        private Label label2;
-        private ListBox listBox1;
-        private TextBox textBox2;
-        private Button button1;
-        private Label label3;
-        private ListBox listBox2;
-        private Button button2;
+        private Label ContinentLabel;
+        private ListBox AdjecentNodeList;
+        private TextBox ContinentNameBox;
+        private Button CreateButton;
+        private Label CurrentNodeLabel;
+        private ListBox ContinentListBox;
+        private Button CancelButton;
         private Label label4;
-        private TextBox textBox3;
-        private ListBox listBox3;
-        private TextBox textBox4;
-        private Button button3;
-        private TextBox textBox5;
-        private Button button4;
+        private TextBox NodeConnectedBox;
+        private ListBox ConnectedContinentsList;
+        private TextBox AddContinentNameBox;
+        private Button AddContinentButton;
+        private TextBox ContinentTroopBox;
+        private Button CreateFileButton;
         private Label label5;
         private Label label6;
-        private Label label7;
+        private Label NodeLabel;
         private Label label8;
     }
 }

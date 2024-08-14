@@ -28,13 +28,13 @@ namespace UnionMapCreator
         {
             bool alreadyExists = false;
             bool continentExist = false;
-            if (textBox1.Text != string.Empty && textBox3.Text != string.Empty)
+            if (NodeNameBox.Text != string.Empty && NodeConnectedBox.Text != string.Empty)
             {
                 if (continents.Count != 0)
                 {
                     for (int i = 0; i < continents.Count; i++)
                     {
-                        if (continents[i].name == textBox3.Text)
+                        if (continents[i].name == NodeConnectedBox.Text)
                         {
                             continentExist = true; break;
                         }
@@ -44,13 +44,13 @@ namespace UnionMapCreator
                 {
                     if (nodes.Count == 0)
                     {
-                        addNode(e, textBox3.Text);
+                        addNode(e, NodeConnectedBox.Text);
                     }
                     else
                     {
                         for (int i = 0; i < nodes.Count; i++)
                         {
-                            if (nodes[i].name == textBox1.Text)
+                            if (nodes[i].name == NodeNameBox.Text)
                             {
                                 alreadyExists = true;
                             }
@@ -61,7 +61,7 @@ namespace UnionMapCreator
                         }
                         else
                         {
-                            addNode(e, textBox3.Text);
+                            addNode(e, NodeConnectedBox.Text);
                         }
                     }
                 }
@@ -82,7 +82,7 @@ namespace UnionMapCreator
             pb.MouseDown += new MouseEventHandler(node_Click);
             pictureBox1.Controls.Add(pb);
 
-            nodes.Add(new Node(textBox1.Text, pb, continent));
+            nodes.Add(new Node(NodeNameBox.Text, pb, continent));
             Debug.WriteLine($"added Node: {nodes.Count}");
         }
         private void node_Click(object sender, MouseEventArgs e)
@@ -96,7 +96,7 @@ namespace UnionMapCreator
                     if (node.pictureBox == pictureBox)
                     {
                         currentNodeName = node.name;
-                        label3.Text = "Current Node: " + node.name;
+                        CurrentNodeLabel.Text = "Current Node: " + node.name;
                         UpdateListBox();
                     }
                 }
@@ -126,64 +126,65 @@ namespace UnionMapCreator
             }
         }
 
-        private void label3_TextChanged(object sender, EventArgs e)
+        private void CurrentNodeLabel_TextChanged(object sender, EventArgs e)
         {
             UpdateListBox();
         }
 
         private void UpdateListBox()
         {
-            listBox1.Items.Clear();
-            listBox3.Items.Clear();
+            AdjecentNodeList.Items.Clear();
+            ConnectedContinentsList.Items.Clear();
             foreach (Node node in nodes)
             {
                 if (node.name == currentNodeName)
                 {
                     for (int i = 0; i < node.adjecentList.Count; i++)
                     {
-                        listBox1.Items.Add(node.adjecentList[i]);
+                        AdjecentNodeList.Items.Add(node.adjecentList[i]);
                     }
                     for (int j = 0; j < node.continentList.Count; j++)
                     {
-                        listBox3.Items.Add(node.continentList[j]);
+                        ConnectedContinentsList.Items.Add(node.continentList[j]);
                     }
                 }
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
             currentNodeName = string.Empty;
+            CurrentNodeLabel.Text = string.Empty;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void CreateButton_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(textBox2.Text))
+            if (string.IsNullOrEmpty(ContinentNameBox.Text))
             {
                 throw new Exception("please enter name");
             }
-            else if (string.IsNullOrEmpty(textBox5.Text))
+            else if (string.IsNullOrEmpty(ContinentTroopBox.Text))
             {
                 throw new Exception("please enter troop bonus");
             }
             else
             {
-                continents.Add(new Continent(textBox2.Text, int.Parse(textBox5.Text)));
-                listBox2.Items.Add(textBox2.Text);
+                continents.Add(new Continent(ContinentNameBox.Text, int.Parse(ContinentTroopBox.Text)));
+                ContinentListBox.Items.Add(ContinentNameBox.Text);
             }
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void AddContinentButton_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(currentNodeName))
             {
-                if (!string.IsNullOrEmpty(textBox4.Text))
+                if (!string.IsNullOrEmpty(AddContinentNameBox.Text))
                 {
                     foreach (Node node in nodes)
                     {
                         if (node.name == currentNodeName)
                         {
-                            node.continentList.Add(textBox4.Text);
+                            node.continentList.Add(AddContinentNameBox.Text);
                             UpdateListBox();
                         }
                     }
@@ -197,7 +198,7 @@ namespace UnionMapCreator
                 throw new Exception("Current Node Cannot Be Empty");
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void CreateFileButton_Click(object sender, EventArgs e)
         {
             foreach (Node node in nodes)
             {
