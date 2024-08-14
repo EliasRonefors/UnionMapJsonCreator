@@ -2,6 +2,7 @@ using Microsoft.VisualBasic.Devices;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json;
+using System.Windows.Forms;
 
 namespace UnionMapCreator
 {
@@ -58,45 +59,59 @@ namespace UnionMapCreator
         private void node_Click(object sender, MouseEventArgs e)
         {
             PictureBox pictureBox = sender as PictureBox;
+            Node currentNode = getCurrentNode();
 
-            if (!hasCurrentNode())
+            Node clickedNode = getClickedNode(pictureBox);
+     
+
+            if (string.IsNullOrEmpty(currentNodeName))
             {
-                foreach (Node node in nodes)
-                {
-                    if (node.pictureBox == pictureBox)
-                    {
-                        currentNodeName = node.name;
-                        CurrentNodeLabel.Text = "Current Node: " + node.name;
-                        UpdateListBox();
-                    }
-                }
+                currentNodeName = clickedNode.name;
+                CurrentNodeLabel.Text = "Current Node: " + clickedNode.name;
+                UpdateListBox();
+                changeHintLabel("Select Another Node To Connect");
             }
             else if (hasCurrentNode())
             {
-                foreach (Node node in nodes)
+                if (currentNode == clickedNode)
                 {
-                    if (node.pictureBox == pictureBox)
-                    {
-                        if (currentNodeName == node.name)
-                        {
-                            changeHintLabel("Cannot Add Current Node To Current Nodes Adjecent Nodes");
-                        }
-                    }
+                    changeHintLabel("Cannot Add Current Node To Current Nodes Adjecent Nodes");
                 }
-
-                Node currentNode = getCurrentNode();
-                foreach (Node node in nodes)
+                else
                 {
-                    if (node.pictureBox == pictureBox)
+                    if (!ClickedNodeIsConnected(clickedNode))
                     {
-                        currentNode.adjecentList.Add(node.name);
+                        currentNode.adjecentList.Add(clickedNode.name);
                         UpdateListBox();
                         changeHintLabel("Nodes Connected Succesfully");
                     }
                 }
             }
         }
-
+        private bool ClickedNodeIsConnected(Node clickedNode)
+        {
+            Node currentNode = getCurrentNode();
+            for (int i = 0; i < currentNode.adjecentList.Count; i++)
+            {
+                if (clickedNode.name == currentNode.adjecentList[i])
+                {
+                    changeHintLabel($"Selected Node {clickedNode.name} Is Already Connected To The Current Node");
+                    return true;
+                }
+            }
+            return false;
+        }
+        private Node getClickedNode(PictureBox pictureBox)
+        {
+            foreach (Node node in nodes)
+            {
+                if (node.pictureBox == pictureBox)
+                {
+                    return node;
+                }
+            }
+            return null;
+        }
         private void CurrentNodeLabel_TextChanged(object sender, EventArgs e)
         {
             UpdateListBox();
