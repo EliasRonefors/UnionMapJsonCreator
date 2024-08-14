@@ -15,7 +15,6 @@ namespace UnionMapCreator
         {
             InitializeComponent();
         }
-
         private void Form1_Load(object sender, EventArgs e)
         {
             Image image = Image.FromFile(@"UnionMap.png");
@@ -23,73 +22,44 @@ namespace UnionMapCreator
             pictureBox1.Image = image;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
-
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            bool alreadyExists = false;
-            bool continentExist = false;
-            if (NodeNameBox.Text != string.Empty && NodeConnectedBox.Text != string.Empty)
+            if (NodeNameBox.Text != string.Empty)
             {
-                if (continents.Count != 0)
+                if (nodes.Count == 0)
                 {
-                    for (int i = 0; i < continents.Count; i++)
-                    {
-                        if (continents[i].name == NodeConnectedBox.Text)
-                        {
-                            continentExist = true; break;
-                        }
-                    }
-                }
-                if (continentExist)
-                {
-                    if (nodes.Count == 0)
-                    {
-                        addNode(e, NodeConnectedBox.Text);
-                    }
-                    else
-                    {
-                        for (int i = 0; i < nodes.Count; i++)
-                        {
-                            if (nodes[i].name == NodeNameBox.Text)
-                            {
-                                alreadyExists = true;
-                            }
-                        }
-                        if (alreadyExists)
-                        {
-                            throw new Exception("Name Already Exists");
-                        }
-                        else
-                        {
-                            addNode(e, NodeConnectedBox.Text);
-                        }
-                    }
+                    addNode(e);
                 }
                 else
                 {
-                    throw new Exception("continent does not exist");
+                    if (!alreadyExists(NodeNameBox.Text))
+                    {
+                        addNode(e);
+                    }
                 }
             }
             else
-                throw new Exception("Text Box Cannot Be Empty");
+                changeHintLabel("Please Name The Node Before Placing");
         }
-        private void addNode(MouseEventArgs e, string continent)
+        private void addNode(MouseEventArgs e)
         {
             Point point = e.Location;
+            Point offset = new Point(point.X - 5, point.Y - 5);
+
             PictureBox pb = new PictureBox();
-            pb.Location = point;
+            pb.Location = offset;
             pb.Size = new Size(10, 10);
             pb.MouseDown += new MouseEventHandler(node_Click);
             pictureBox1.Controls.Add(pb);
 
-            nodes.Add(new Node(NodeNameBox.Text, pb, continent));
+            nodes.Add(new Node(NodeNameBox.Text, pb));
             Debug.WriteLine($"added Node: {nodes.Count}");
         }
         private void node_Click(object sender, MouseEventArgs e)
         {
             PictureBox pictureBox = sender as PictureBox;
 
-            if (string.IsNullOrEmpty(currentNodeName))
+            if (!hasCurrentNode())
             {
                 foreach (Node node in nodes)
                 {
@@ -101,7 +71,7 @@ namespace UnionMapCreator
                     }
                 }
             }
-            else if (!string.IsNullOrEmpty(currentNodeName))
+            else if (hasCurrentNode())
             {
                 foreach (Node node in nodes)
                 {
@@ -109,18 +79,19 @@ namespace UnionMapCreator
                     {
                         if (currentNodeName == node.name)
                         {
-                            throw new Exception("Cannot Add Current Node To Adjecent Nodes");
+                            changeHintLabel("Cannot Add Current Node To Current Nodes Adjecent Nodes");
                         }
                     }
                 }
 
-                Node currentNode = nodes.FirstOrDefault(node => node.name == currentNodeName);
+                Node currentNode = getCurrentNode();
                 foreach (Node node in nodes)
                 {
                     if (node.pictureBox == pictureBox)
                     {
                         currentNode.adjecentList.Add(node.name);
                         UpdateListBox();
+                        changeHintLabel("Nodes Connected Succesfully");
                     }
                 }
             }
@@ -135,69 +106,49 @@ namespace UnionMapCreator
         {
             AdjecentNodeList.Items.Clear();
             ConnectedContinentsList.Items.Clear();
-            foreach (Node node in nodes)
+
+            Node node = getCurrentNode();
+            if (node != null)
             {
-                if (node.name == currentNodeName)
+                for (int i = 0; i < node.adjecentList.Count; i++)
                 {
-                    for (int i = 0; i < node.adjecentList.Count; i++)
-                    {
-                        AdjecentNodeList.Items.Add(node.adjecentList[i]);
-                    }
-                    for (int j = 0; j < node.continentList.Count; j++)
-                    {
-                        ConnectedContinentsList.Items.Add(node.continentList[j]);
-                    }
+                    AdjecentNodeList.Items.Add(node.adjecentList[i]);
+                }
+                for (int j = 0; j < node.continentList.Count; j++)
+                {
+                    ConnectedContinentsList.Items.Add(node.continentList[j]);
                 }
             }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            currentNodeName = string.Empty;
-            CurrentNodeLabel.Text = string.Empty;
+            deSelectCurrentNode();
         }
 
         private void CreateButton_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(ContinentNameBox.Text))
             {
-                throw new Exception("please enter name");
+                changeHintLabel("Please Enter a Name");
             }
             else if (string.IsNullOrEmpty(ContinentTroopBox.Text))
             {
-                throw new Exception("please enter troop bonus");
+                changeHintLabel("Please Enter Troop Bonus Amount");
             }
             else
             {
-                continents.Add(new Continent(ContinentNameBox.Text, int.Parse(ContinentTroopBox.Text)));
-                ContinentListBox.Items.Add(ContinentNameBox.Text);
-            }
-        }
-
-        private void AddContinentButton_Click(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(currentNodeName))
-            {
-                if (!string.IsNullOrEmpty(AddContinentNameBox.Text))
+                if (int.TryParse(ContinentTroopBox.Text, out int result))
                 {
-                    foreach (Node node in nodes)
-                    {
-                        if (node.name == currentNodeName)
-                        {
-                            node.continentList.Add(AddContinentNameBox.Text);
-                            UpdateListBox();
-                        }
-                    }
+                    continents.Add(new Continent(ContinentNameBox.Text, int.Parse(ContinentTroopBox.Text)));
+                    ContinentListBox.Items.Add(ContinentNameBox.Text);
                 }
                 else
                 {
-                    throw new Exception("Text Box Cannot Be Empty");
+                    changeHintLabel("Troop Bonus Must Be Of Type Integer");
                 }
             }
-            else
-                throw new Exception("Current Node Cannot Be Empty");
         }
-
         private void CreateFileButton_Click(object sender, EventArgs e)
         {
             foreach (Node node in nodes)
@@ -205,7 +156,6 @@ namespace UnionMapCreator
                 node.adjecentNames = node.adjecentList.ToArray();
                 node.continentNames = node.continentList.ToArray();
             }
-
 
             Map map = new Map(continents, nodes);
 
@@ -219,6 +169,86 @@ namespace UnionMapCreator
             File.WriteAllText(filePath, jsonString);
 
             MessageBox.Show("File saved successfully at " + filePath);
+        }
+
+        private void comboBox1_DropDown(object sender, EventArgs e)
+        {
+
+            if (hasCurrentNode())
+            {
+                if (continents.Count != 0)
+                {
+                    comboBox1.Items.Clear();
+                    foreach (Continent continent in continents)
+                    {
+                        comboBox1.Items.Add(continent.name);
+                    }
+                }
+                else
+                {
+                    changeHintLabel("There Are No Existing Continents");
+                }
+            }
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (hasCurrentNode())
+            {
+                if (!string.IsNullOrEmpty(comboBox1.SelectedIndex.ToString()))
+                {
+                    Node node = getCurrentNode();
+                    node.continentList.Add(comboBox1.Text);
+                    UpdateListBox();
+                }
+            }
+        }
+        private void changeHintLabel(string message)
+        {
+            HintLabel.Text = "Hint: " + message;
+        }
+        private Node getCurrentNode()
+        {
+            if (hasCurrentNode())
+            {
+                foreach (Node node in nodes)
+                {
+                    if (currentNodeName == node.name)
+                    {
+                        return node;
+                    }
+                }
+                throw new Exception("Current Node Does Not Exist");
+            }
+            else
+            {
+                return null;
+            }
+        }
+        private bool alreadyExists(string text)
+        {
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                if (nodes[i].name == text)
+                {
+                    changeHintLabel("Node Already Exists");
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool hasCurrentNode()
+        {
+            if (string.IsNullOrEmpty(currentNodeName))
+            {
+                changeHintLabel("Please Select a Node");
+                return false;
+            }
+            else { return true; }
+        }
+        private void deSelectCurrentNode()
+        {
+            currentNodeName = string.Empty;
+            CurrentNodeLabel.Text = string.Empty;
         }
     }
 }

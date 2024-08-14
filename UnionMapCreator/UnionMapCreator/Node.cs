@@ -16,12 +16,10 @@ namespace UnionMapCreator
         public string[] continentNames {  get; set; }
         public string[] adjecentNames { get; set; }
 
-        public Node(string name, PictureBox pictureBox, string aContinent) 
+        public Node(string name, PictureBox pictureBox) 
         { 
             this.name = name;
             this.pictureBox = pictureBox;
-
-            continentList.Add(aContinent);
         }
     }
 }

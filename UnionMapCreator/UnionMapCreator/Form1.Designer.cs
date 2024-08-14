@@ -39,16 +39,16 @@
             ContinentListBox = new ListBox();
             CancelButton = new Button();
             label4 = new Label();
-            NodeConnectedBox = new TextBox();
             ConnectedContinentsList = new ListBox();
-            AddContinentNameBox = new TextBox();
-            AddContinentButton = new Button();
             ContinentTroopBox = new TextBox();
             CreateFileButton = new Button();
             label5 = new Label();
             label6 = new Label();
             NodeLabel = new Label();
-            label8 = new Label();
+            label2 = new Label();
+            comboBox1 = new ComboBox();
+            button1 = new Button();
+            HintLabel = new Label();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -91,9 +91,10 @@
             // 
             AdjecentNodeList.FormattingEnabled = true;
             AdjecentNodeList.ItemHeight = 15;
-            AdjecentNodeList.Location = new Point(197, 558);
+            AdjecentNodeList.Location = new Point(1122, 160);
             AdjecentNodeList.Name = "AdjecentNodeList";
-            AdjecentNodeList.Size = new Size(150, 109);
+            AdjecentNodeList.SelectionMode = SelectionMode.None;
+            AdjecentNodeList.Size = new Size(130, 154);
             AdjecentNodeList.TabIndex = 6;
             // 
             // ContinentNameBox
@@ -116,7 +117,7 @@
             // CurrentNodeLabel
             // 
             CurrentNodeLabel.AutoSize = true;
-            CurrentNodeLabel.Location = new Point(12, 559);
+            CurrentNodeLabel.Location = new Point(1122, 80);
             CurrentNodeLabel.Name = "CurrentNodeLabel";
             CurrentNodeLabel.Size = new Size(0, 15);
             CurrentNodeLabel.TabIndex = 9;
@@ -128,60 +129,39 @@
             ContinentListBox.ItemHeight = 15;
             ContinentListBox.Location = new Point(984, 160);
             ContinentListBox.Name = "ContinentListBox";
+            ContinentListBox.SelectionMode = SelectionMode.None;
             ContinentListBox.Size = new Size(130, 154);
             ContinentListBox.TabIndex = 10;
             // 
             // CancelButton
             // 
-            CancelButton.Location = new Point(12, 577);
+            CancelButton.Location = new Point(1122, 98);
             CancelButton.Name = "CancelButton";
-            CancelButton.Size = new Size(75, 23);
+            CancelButton.Size = new Size(130, 23);
             CancelButton.TabIndex = 11;
-            CancelButton.Text = "Cancel";
+            CancelButton.Text = "Cancel Selection";
             CancelButton.UseVisualStyleBackColor = true;
             CancelButton.Click += CancelButton_Click;
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(1122, 80);
+            label4.Location = new Point(1122, 331);
             label4.Name = "label4";
-            label4.Size = new Size(119, 15);
+            label4.Size = new Size(126, 15);
             label4.TabIndex = 12;
-            label4.Text = "connected Continent";
-            // 
-            // NodeConnectedBox
-            // 
-            NodeConnectedBox.Location = new Point(1122, 98);
-            NodeConnectedBox.Name = "NodeConnectedBox";
-            NodeConnectedBox.Size = new Size(130, 23);
-            NodeConnectedBox.TabIndex = 13;
+            label4.Text = "Connected Continents";
             // 
             // ConnectedContinentsList
             // 
             ConnectedContinentsList.FormattingEnabled = true;
             ConnectedContinentsList.ItemHeight = 15;
-            ConnectedContinentsList.Location = new Point(353, 558);
+            ConnectedContinentsList.Location = new Point(1122, 349);
+            ConnectedContinentsList.Margin = new Padding(3, 3, 3, 0);
             ConnectedContinentsList.Name = "ConnectedContinentsList";
-            ConnectedContinentsList.Size = new Size(150, 109);
+            ConnectedContinentsList.SelectionMode = SelectionMode.None;
+            ConnectedContinentsList.Size = new Size(130, 154);
             ConnectedContinentsList.TabIndex = 14;
-            // 
-            // AddContinentNameBox
-            // 
-            AddContinentNameBox.Location = new Point(1122, 178);
-            AddContinentNameBox.Name = "AddContinentNameBox";
-            AddContinentNameBox.Size = new Size(130, 23);
-            AddContinentNameBox.TabIndex = 15;
-            // 
-            // AddContinentButton
-            // 
-            AddContinentButton.Location = new Point(1177, 207);
-            AddContinentButton.Name = "AddContinentButton";
-            AddContinentButton.Size = new Size(75, 23);
-            AddContinentButton.TabIndex = 16;
-            AddContinentButton.Text = "Add";
-            AddContinentButton.UseVisualStyleBackColor = true;
-            AddContinentButton.Click += AddContinentButton_Click;
             // 
             // ContinentTroopBox
             // 
@@ -228,30 +208,62 @@
             NodeLabel.TabIndex = 21;
             NodeLabel.Text = "Node: ";
             // 
-            // label8
+            // label2
             // 
-            label8.AutoSize = true;
-            label8.Location = new Point(1122, 160);
-            label8.Name = "label8";
-            label8.Size = new Size(88, 15);
-            label8.TabIndex = 22;
-            label8.Text = "Add Continent:";
+            label2.AutoSize = true;
+            label2.Location = new Point(1122, 142);
+            label2.Name = "label2";
+            label2.Size = new Size(102, 15);
+            label2.TabIndex = 22;
+            label2.Text = "Connected Nodes";
+            // 
+            // comboBox1
+            // 
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(1122, 503);
+            comboBox1.Margin = new Padding(3, 0, 0, 3);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(106, 23);
+            comboBox1.TabIndex = 23;
+            comboBox1.DropDown += comboBox1_DropDown;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(1228, 503);
+            button1.Margin = new Padding(0);
+            button1.Name = "button1";
+            button1.Size = new Size(24, 24);
+            button1.TabIndex = 24;
+            button1.Text = "+";
+            button1.TextAlign = ContentAlignment.MiddleRight;
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
+            // HintLabel
+            // 
+            HintLabel.AutoSize = true;
+            HintLabel.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            HintLabel.Location = new Point(12, 558);
+            HintLabel.Name = "HintLabel";
+            HintLabel.Size = new Size(46, 21);
+            HintLabel.TabIndex = 25;
+            HintLabel.Text = "Hint: ";
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1264, 681);
-            Controls.Add(label8);
+            Controls.Add(HintLabel);
+            Controls.Add(button1);
+            Controls.Add(comboBox1);
+            Controls.Add(label2);
             Controls.Add(NodeLabel);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(CreateFileButton);
             Controls.Add(ContinentTroopBox);
-            Controls.Add(AddContinentButton);
-            Controls.Add(AddContinentNameBox);
             Controls.Add(ConnectedContinentsList);
-            Controls.Add(NodeConnectedBox);
             Controls.Add(label4);
             Controls.Add(CancelButton);
             Controls.Add(ContinentListBox);
@@ -284,15 +296,15 @@
         private ListBox ContinentListBox;
         private Button CancelButton;
         private Label label4;
-        private TextBox NodeConnectedBox;
         private ListBox ConnectedContinentsList;
-        private TextBox AddContinentNameBox;
-        private Button AddContinentButton;
         private TextBox ContinentTroopBox;
         private Button CreateFileButton;
         private Label label5;
         private Label label6;
         private Label NodeLabel;
-        private Label label8;
+        private Label label2;
+        private ComboBox comboBox1;
+        private Button button1;
+        private Label HintLabel;
     }
 }
