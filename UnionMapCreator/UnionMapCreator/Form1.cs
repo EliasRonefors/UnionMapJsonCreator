@@ -15,6 +15,9 @@ namespace UnionMapCreator
         public Form1()
         {
             InitializeComponent();
+
+            betterListBox1.addItem("test");
+            betterListBox1.addItem("new item");
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -62,7 +65,7 @@ namespace UnionMapCreator
             Node currentNode = getCurrentNode();
 
             Node clickedNode = getClickedNode(pictureBox);
-     
+
 
             if (string.IsNullOrEmpty(currentNodeName))
             {
@@ -121,7 +124,6 @@ namespace UnionMapCreator
         {
             AdjecentNodeList.Items.Clear();
             ConnectedContinentsList.Items.Clear();
-
             Node node = getCurrentNode();
             if (node != null)
             {

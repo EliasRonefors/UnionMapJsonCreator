@@ -49,6 +49,7 @@
             comboBox1 = new ComboBox();
             button1 = new Button();
             HintLabel = new Label();
+            betterListBox1 = new BetterListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -106,6 +107,7 @@
             // 
             // CreateButton
             // 
+            CreateButton.FlatAppearance.BorderSize = 0;
             CreateButton.Location = new Point(1039, 127);
             CreateButton.Name = "CreateButton";
             CreateButton.Size = new Size(75, 23);
@@ -249,11 +251,23 @@
             HintLabel.TabIndex = 25;
             HintLabel.Text = "Hint: ";
             // 
+            // betterListBox1
+            // 
+            betterListBox1.AutoScroll = true;
+            betterListBox1.BackColor = SystemColors.Control;
+            betterListBox1.BorderStyle = BorderStyle.Fixed3D;
+            betterListBox1.Location = new Point(984, 349);
+            betterListBox1.Name = "betterListBox1";
+            betterListBox1.Size = new Size(130, 154);
+            betterListBox1.TabIndex = 26;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(64, 64, 64);
             ClientSize = new Size(1264, 681);
+            Controls.Add(betterListBox1);
             Controls.Add(HintLabel);
             Controls.Add(button1);
             Controls.Add(comboBox1);
@@ -306,5 +320,6 @@
         private ComboBox comboBox1;
         private Button button1;
         private Label HintLabel;
+        private BetterListBox betterListBox1;
     }
 }
