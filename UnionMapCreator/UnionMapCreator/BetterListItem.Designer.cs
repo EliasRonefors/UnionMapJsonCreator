@@ -47,6 +47,7 @@
             button1.AutoSize = true;
             button1.Dock = DockStyle.Right;
             button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
             button1.Location = new Point(130, 0);
             button1.Name = "button1";
             button1.Size = new Size(22, 22);
@@ -58,7 +59,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.White;
+            BackColor = Color.FromArgb(20, 20, 20);
             Controls.Add(button1);
             Controls.Add(label1);
             Name = "BetterListItem";

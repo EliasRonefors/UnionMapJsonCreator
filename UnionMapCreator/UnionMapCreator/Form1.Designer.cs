@@ -32,14 +32,11 @@
             NodeNameBox = new TextBox();
             label1 = new Label();
             ContinentLabel = new Label();
-            AdjecentNodeList = new ListBox();
             ContinentNameBox = new TextBox();
             CreateButton = new Button();
             CurrentNodeLabel = new Label();
-            ContinentListBox = new ListBox();
             CancelButton = new Button();
             label4 = new Label();
-            ConnectedContinentsList = new ListBox();
             ContinentTroopBox = new TextBox();
             CreateFileButton = new Button();
             label5 = new Label();
@@ -50,6 +47,8 @@
             button1 = new Button();
             HintLabel = new Label();
             betterListBox1 = new BetterListBox();
+            betterListBox2 = new BetterListBox();
+            betterListBox3 = new BetterListBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -64,6 +63,9 @@
             // 
             // NodeNameBox
             // 
+            NodeNameBox.BackColor = Color.FromArgb(30, 30, 30);
+            NodeNameBox.BorderStyle = BorderStyle.FixedSingle;
+            NodeNameBox.ForeColor = SystemColors.ButtonFace;
             NodeNameBox.Location = new Point(1122, 54);
             NodeNameBox.Name = "NodeNameBox";
             NodeNameBox.Size = new Size(130, 23);
@@ -88,18 +90,11 @@
             ContinentLabel.TabIndex = 5;
             ContinentLabel.Text = "Create Continent:";
             // 
-            // AdjecentNodeList
-            // 
-            AdjecentNodeList.FormattingEnabled = true;
-            AdjecentNodeList.ItemHeight = 15;
-            AdjecentNodeList.Location = new Point(1122, 160);
-            AdjecentNodeList.Name = "AdjecentNodeList";
-            AdjecentNodeList.SelectionMode = SelectionMode.None;
-            AdjecentNodeList.Size = new Size(130, 154);
-            AdjecentNodeList.TabIndex = 6;
-            // 
             // ContinentNameBox
             // 
+            ContinentNameBox.BackColor = Color.FromArgb(30, 30, 30);
+            ContinentNameBox.BorderStyle = BorderStyle.FixedSingle;
+            ContinentNameBox.ForeColor = SystemColors.ButtonFace;
             ContinentNameBox.Location = new Point(984, 54);
             ContinentNameBox.Name = "ContinentNameBox";
             ContinentNameBox.Size = new Size(130, 23);
@@ -107,7 +102,7 @@
             // 
             // CreateButton
             // 
-            CreateButton.FlatAppearance.BorderSize = 0;
+            CreateButton.FlatStyle = FlatStyle.Flat;
             CreateButton.Location = new Point(1039, 127);
             CreateButton.Name = "CreateButton";
             CreateButton.Size = new Size(75, 23);
@@ -125,18 +120,9 @@
             CurrentNodeLabel.TabIndex = 9;
             CurrentNodeLabel.TextChanged += CurrentNodeLabel_TextChanged;
             // 
-            // ContinentListBox
-            // 
-            ContinentListBox.FormattingEnabled = true;
-            ContinentListBox.ItemHeight = 15;
-            ContinentListBox.Location = new Point(984, 160);
-            ContinentListBox.Name = "ContinentListBox";
-            ContinentListBox.SelectionMode = SelectionMode.None;
-            ContinentListBox.Size = new Size(130, 154);
-            ContinentListBox.TabIndex = 10;
-            // 
             // CancelButton
             // 
+            CancelButton.FlatStyle = FlatStyle.Flat;
             CancelButton.Location = new Point(1122, 98);
             CancelButton.Name = "CancelButton";
             CancelButton.Size = new Size(130, 23);
@@ -154,19 +140,11 @@
             label4.TabIndex = 12;
             label4.Text = "Connected Continents";
             // 
-            // ConnectedContinentsList
-            // 
-            ConnectedContinentsList.FormattingEnabled = true;
-            ConnectedContinentsList.ItemHeight = 15;
-            ConnectedContinentsList.Location = new Point(1122, 349);
-            ConnectedContinentsList.Margin = new Padding(3, 3, 3, 0);
-            ConnectedContinentsList.Name = "ConnectedContinentsList";
-            ConnectedContinentsList.SelectionMode = SelectionMode.None;
-            ConnectedContinentsList.Size = new Size(130, 154);
-            ConnectedContinentsList.TabIndex = 14;
-            // 
             // ContinentTroopBox
             // 
+            ContinentTroopBox.BackColor = Color.FromArgb(30, 30, 30);
+            ContinentTroopBox.BorderStyle = BorderStyle.FixedSingle;
+            ContinentTroopBox.ForeColor = SystemColors.ButtonFace;
             ContinentTroopBox.Location = new Point(984, 98);
             ContinentTroopBox.Name = "ContinentTroopBox";
             ContinentTroopBox.Size = new Size(130, 23);
@@ -174,6 +152,7 @@
             // 
             // CreateFileButton
             // 
+            CreateFileButton.FlatStyle = FlatStyle.Flat;
             CreateFileButton.Location = new Point(1177, 646);
             CreateFileButton.Name = "CreateFileButton";
             CreateFileButton.Size = new Size(75, 23);
@@ -221,6 +200,8 @@
             // 
             // comboBox1
             // 
+            comboBox1.BackColor = Color.FromArgb(30, 30, 30);
+            comboBox1.FlatStyle = FlatStyle.Flat;
             comboBox1.FormattingEnabled = true;
             comboBox1.Location = new Point(1122, 503);
             comboBox1.Margin = new Padding(3, 0, 0, 3);
@@ -231,6 +212,8 @@
             // 
             // button1
             // 
+            button1.FlatAppearance.BorderSize = 0;
+            button1.FlatStyle = FlatStyle.Flat;
             button1.Location = new Point(1228, 503);
             button1.Margin = new Padding(0);
             button1.Name = "button1";
@@ -255,18 +238,37 @@
             // 
             betterListBox1.AutoScroll = true;
             betterListBox1.BackColor = SystemColors.Control;
-            betterListBox1.BorderStyle = BorderStyle.Fixed3D;
-            betterListBox1.Location = new Point(984, 349);
+            betterListBox1.BorderStyle = BorderStyle.FixedSingle;
+            betterListBox1.Location = new Point(984, 160);
             betterListBox1.Name = "betterListBox1";
             betterListBox1.Size = new Size(130, 154);
             betterListBox1.TabIndex = 26;
+            // 
+            // betterListBox2
+            // 
+            betterListBox2.BackColor = SystemColors.Control;
+            betterListBox2.BorderStyle = BorderStyle.FixedSingle;
+            betterListBox2.Location = new Point(1122, 160);
+            betterListBox2.Name = "betterListBox2";
+            betterListBox2.Size = new Size(130, 154);
+            betterListBox2.TabIndex = 27;
+            // 
+            // betterListBox3
+            // 
+            betterListBox3.BorderStyle = BorderStyle.FixedSingle;
+            betterListBox3.Location = new Point(1122, 349);
+            betterListBox3.Name = "betterListBox3";
+            betterListBox3.Size = new Size(130, 154);
+            betterListBox3.TabIndex = 28;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(64, 64, 64);
+            BackColor = Color.FromArgb(20, 20, 20);
             ClientSize = new Size(1264, 681);
+            Controls.Add(betterListBox3);
+            Controls.Add(betterListBox2);
             Controls.Add(betterListBox1);
             Controls.Add(HintLabel);
             Controls.Add(button1);
@@ -277,18 +279,19 @@
             Controls.Add(label5);
             Controls.Add(CreateFileButton);
             Controls.Add(ContinentTroopBox);
-            Controls.Add(ConnectedContinentsList);
             Controls.Add(label4);
             Controls.Add(CancelButton);
-            Controls.Add(ContinentListBox);
             Controls.Add(CurrentNodeLabel);
             Controls.Add(CreateButton);
             Controls.Add(ContinentNameBox);
-            Controls.Add(AdjecentNodeList);
             Controls.Add(ContinentLabel);
             Controls.Add(label1);
             Controls.Add(NodeNameBox);
             Controls.Add(pictureBox1);
+            ForeColor = SystemColors.ButtonFace;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;
@@ -303,14 +306,11 @@
         private TextBox NodeNameBox;
         private Label label1;
         private Label ContinentLabel;
-        private ListBox AdjecentNodeList;
         private TextBox ContinentNameBox;
         private Button CreateButton;
         private Label CurrentNodeLabel;
-        private ListBox ContinentListBox;
         private Button CancelButton;
         private Label label4;
-        private ListBox ConnectedContinentsList;
         private TextBox ContinentTroopBox;
         private Button CreateFileButton;
         private Label label5;
@@ -321,5 +321,7 @@
         private Button button1;
         private Label HintLabel;
         private BetterListBox betterListBox1;
+        private BetterListBox betterListBox2;
+        private BetterListBox betterListBox3;
     }
 }

@@ -16,7 +16,7 @@ namespace UnionMapCreator
         public BetterListItem()
         {
             InitializeComponent();
-            button1.Click += Button_Click;
+            button1.Click += Button_Click!;
         }
         public string ItemText
         {

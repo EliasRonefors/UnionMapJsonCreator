@@ -23,29 +23,12 @@ namespace UnionMapCreator
             InitializeComponent();
         }
 
-        public void addItem(string itemText)
+        public void addItem(BetterListItem item)
         {
-            BetterListItem itemControl = new BetterListItem
-            {
-                ItemText = itemText,
-                Width = panel1.Width,
-                Location = new Point(0, items.Count * 23), //Adjust height as needed
-            };
-
-            itemControl.ButtonClick += ItemControl_ButtonClick;
-
-            items.Add(itemControl);
-            panel1.Controls.Add(itemControl);
+            items.Add(item);
+            panel1.Controls.Add(item);
 
             this.Invalidate();
-        }
-        private void ItemControl_ButtonClick(object sender, EventArgs e)
-        {
-            BetterListItem clickedItem = sender as BetterListItem;
-            int index = items.IndexOf(clickedItem);
-            selectedIndex = index;
-
-            removeItem(index);
         }
         public void removeItem(int index)
         {
@@ -63,6 +46,11 @@ namespace UnionMapCreator
 
                 this.Invalidate();
             }
+        }
+        public void clear()
+        {
+            items.Clear();
+            panel1.Controls.Clear();
         }
     }
 }

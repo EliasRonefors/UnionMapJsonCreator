@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text.Json;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace UnionMapCreator
 {
@@ -15,9 +17,6 @@ namespace UnionMapCreator
         public Form1()
         {
             InitializeComponent();
-
-            betterListBox1.addItem("test");
-            betterListBox1.addItem("new item");
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -122,27 +121,56 @@ namespace UnionMapCreator
 
         private void UpdateListBox()
         {
-            AdjecentNodeList.Items.Clear();
-            ConnectedContinentsList.Items.Clear();
+            BetterListItem itemControl;
+            betterListBox2.clear();
+            betterListBox3.clear();
             Node node = getCurrentNode();
             if (node != null)
             {
                 for (int i = 0; i < node.adjecentList.Count; i++)
                 {
-                    AdjecentNodeList.Items.Add(node.adjecentList[i]);
+                    itemControl = CreateListItem(node.adjecentList[i], ref betterListBox2);
+                    itemControl.ButtonClick += NodeListItemClick;
+                    betterListBox2.addItem(itemControl);
                 }
                 for (int j = 0; j < node.continentList.Count; j++)
                 {
-                    ConnectedContinentsList.Items.Add(node.continentList[j]);
+                    itemControl = CreateListItem(node.continentList[j], ref betterListBox3);
+                    itemControl.ButtonClick += ConnectedContinentListItemClick;
+                    betterListBox3.addItem(itemControl);
                 }
             }
         }
-
+        private void ContinentListItemClick(object sender, EventArgs e)
+        {
+            BetterListItem clickedItem = sender as BetterListItem;
+            RemoveItemFormLists(clickedItem, betterListBox1);
+        }
+        private void NodeListItemClick(object sender, EventArgs e)
+        {
+            BetterListItem clickedItem = sender as BetterListItem;
+            RemoveItemFormLists(clickedItem, betterListBox2);
+        }
+        private void ConnectedContinentListItemClick(object sender, EventArgs e)
+        {
+            BetterListItem clickedItem = sender as BetterListItem;
+            RemoveItemFormLists(clickedItem, betterListBox3);
+        }
         private void CancelButton_Click(object sender, EventArgs e)
         {
             deSelectCurrentNode();
         }
+        private BetterListItem CreateListItem(string text, ref BetterListBox box)
+        {
+            BetterListItem itemControl = new BetterListItem
+            {
+                ItemText = text,
+                Width = box.Width - 2,
+                Location = new Point(0, box.items.Count * 24), //Adjust height as needed
+            };
 
+            return itemControl;
+        }
         private void CreateButton_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(ContinentNameBox.Text))
@@ -158,11 +186,54 @@ namespace UnionMapCreator
                 if (int.TryParse(ContinentTroopBox.Text, out int result))
                 {
                     continents.Add(new Continent(ContinentNameBox.Text, int.Parse(ContinentTroopBox.Text)));
-                    ContinentListBox.Items.Add(ContinentNameBox.Text);
+
+                    BetterListItem itemControl = CreateListItem(ContinentNameBox.Text, ref betterListBox1);
+                    itemControl.ButtonClick += ContinentListItemClick;
+                    betterListBox1.addItem(itemControl);
                 }
                 else
                 {
                     changeHintLabel("Troop Bonus Must Be Of Type Integer");
+                }
+            }
+        }
+
+        private void RemoveItemFormLists(BetterListItem clickedItem, BetterListBox box)
+        {
+            int index = box.items.IndexOf(clickedItem);
+            box.removeItem(index);
+
+            string boxName = box.Name;
+
+            if (boxName == "betterListBox1")
+            {
+                for (int i = 0; i < continents.Count; i++)
+                {
+                    if (clickedItem.ItemText == continents[i].name)
+                    {
+                        continents.Remove(continents[i]);
+                    }
+                }
+            }
+            if (boxName == "betterListBox2")
+            {
+                Node currentNode = getCurrentNode();
+                for (int i = 0; i < currentNode.adjecentList.Count; i++)
+                {
+                    if (clickedItem.ItemText == currentNode.adjecentList[i])
+                    {
+                        changeHintLabel($"Connection Between {currentNode.name} And {currentNode.adjecentList[i]} Removed Succesfully");
+                        currentNode.adjecentList.Remove(currentNode.adjecentList[i]);
+                    }
+                }
+            }
+            if (boxName == "betterListBox3")
+            {
+                Node currentNode = getCurrentNode();
+                for (int i = 0; i < currentNode.continentList.Count; i++)
+                {
+                    changeHintLabel($"Removed {currentNode.continentList[i]} From {currentNode.name}");
+                    currentNode.continentList.Remove(currentNode.continentList[i]);
                 }
             }
         }
