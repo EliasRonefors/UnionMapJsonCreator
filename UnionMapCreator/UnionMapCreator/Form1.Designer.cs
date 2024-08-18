@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            pictureBox1 = new PictureBox();
             NodeNameBox = new TextBox();
             label1 = new Label();
             ContinentLabel = new Label();
@@ -49,17 +48,9 @@
             betterListBox1 = new BetterListBox();
             betterListBox2 = new BetterListBox();
             betterListBox3 = new BetterListBox();
+            pictureBox1 = new PictureBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.Location = new Point(12, 12);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(960, 540);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            pictureBox1.MouseDown += pictureBox1_MouseDown;
             // 
             // NodeNameBox
             // 
@@ -261,12 +252,23 @@
             betterListBox3.Size = new Size(130, 154);
             betterListBox3.TabIndex = 28;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Location = new Point(12, 12);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(960, 540);
+            pictureBox1.SizeMode = PictureBoxSizeMode.AutoSize;
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            pictureBox1.MouseDown += pictureBox1_MouseDown;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(20, 20, 20);
             ClientSize = new Size(1264, 681);
+            Controls.Add(pictureBox1);
             Controls.Add(betterListBox3);
             Controls.Add(betterListBox2);
             Controls.Add(betterListBox1);
@@ -287,7 +289,6 @@
             Controls.Add(ContinentLabel);
             Controls.Add(label1);
             Controls.Add(NodeNameBox);
-            Controls.Add(pictureBox1);
             ForeColor = SystemColors.ButtonFace;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
@@ -301,8 +302,6 @@
         }
 
         #endregion
-
-        private PictureBox pictureBox1;
         private TextBox NodeNameBox;
         private Label label1;
         private Label ContinentLabel;
@@ -323,5 +322,6 @@
         private BetterListBox betterListBox1;
         private BetterListBox betterListBox2;
         private BetterListBox betterListBox3;
+        private PictureBox pictureBox1;
     }
 }

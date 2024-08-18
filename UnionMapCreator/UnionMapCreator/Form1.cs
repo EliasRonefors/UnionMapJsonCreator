@@ -1,5 +1,7 @@
+using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.VisualBasic.Devices;
 using System.Diagnostics;
+using System.Drawing.Text;
 using System.Reflection;
 using System.Text.Json;
 using System.Windows.Forms;
@@ -13,17 +15,73 @@ namespace UnionMapCreator
         List<Continent> continents = new List<Continent>();
         List<Node> nodes = new List<Node>();
 
+        public Image image;
+        private float _zoomFactor = 1f;
+        private const float ZoomStep = 0.1f;
+
         string currentNodeName = string.Empty;
         public Form1()
         {
             InitializeComponent();
+            _zoomFactor = 1.0f; // Start with no zoom
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            Image image = Image.FromFile(@"UnionMap.png");
+            image = Image.FromFile(@"UnionMap.png");
 
-            pictureBox1.Image = image;
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            //pictureBox1.Image = image;
+            pictureBox1.Paint += PictureBox1_Paint;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Normal;
+
+            pictureBox1.MouseWheel += PictureBox1_MouseWheel;
+        }
+        private void PictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            if (image == null) 
+                return;
+
+            int newWidth = (int)(image.Width * _zoomFactor);
+            int newHeight = (int)(image.Height * _zoomFactor);
+
+            if (newWidth <= 0 || newHeight <= 0)
+            {
+                return;
+            }
+
+            Rectangle destRect = new Rectangle(0, 0, pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
+            Rectangle srcRect = new Rectangle(0, 0, newWidth, newHeight);
+            e.Graphics.DrawImage(image, destRect, srcRect, GraphicsUnit.Pixel);
+        }
+        private void PictureBox1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            float oldZoomFactor = _zoomFactor;
+            if (e.Delta > 0)
+                _zoomFactor = Math.Max(0.1f, _zoomFactor - ZoomStep);
+            else if (e.Delta < 0)
+                _zoomFactor += ZoomStep;
+
+            float zoomChange = _zoomFactor / oldZoomFactor;
+
+            int mouseX = e.X;
+            int mouseY = e.Y;
+
+            Point imagePosition = pictureBox1.PointToClient(new Point(pictureBox1.Left, pictureBox1.Top));
+
+            int newOffsetX = (int)((mouseX - imagePosition.X) * (1 - zoomChange));
+            int newOffsetY = (int)((mouseY - imagePosition.Y) * (1 - zoomChange));
+
+            pictureBox1.Invalidate(); // Trigger redraw
+        }
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            // Ensure that the PictureBox handles the MouseWheel event
+            pictureBox1.Focus();
+            base.OnMouseWheel(e);
+        }
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            pictureBox1.Invalidate(); // Redraw on resize
         }
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
@@ -144,17 +202,17 @@ namespace UnionMapCreator
         private void ContinentListItemClick(object sender, EventArgs e)
         {
             BetterListItem clickedItem = sender as BetterListItem;
-            RemoveItemFormLists(clickedItem, betterListBox1);
+            RemoveItemFromLists(clickedItem, betterListBox1);
         }
         private void NodeListItemClick(object sender, EventArgs e)
         {
             BetterListItem clickedItem = sender as BetterListItem;
-            RemoveItemFormLists(clickedItem, betterListBox2);
+            RemoveItemFromLists(clickedItem, betterListBox2);
         }
         private void ConnectedContinentListItemClick(object sender, EventArgs e)
         {
             BetterListItem clickedItem = sender as BetterListItem;
-            RemoveItemFormLists(clickedItem, betterListBox3);
+            RemoveItemFromLists(clickedItem, betterListBox3);
         }
         private void CancelButton_Click(object sender, EventArgs e)
         {
@@ -198,7 +256,7 @@ namespace UnionMapCreator
             }
         }
 
-        private void RemoveItemFormLists(BetterListItem clickedItem, BetterListBox box)
+        private void RemoveItemFromLists(BetterListItem clickedItem, BetterListBox box)
         {
             int index = box.items.IndexOf(clickedItem);
             box.removeItem(index);
@@ -211,6 +269,7 @@ namespace UnionMapCreator
                 {
                     if (clickedItem.ItemText == continents[i].name)
                     {
+                        RemoveContinentInOtherBox(continents[i]);
                         continents.Remove(continents[i]);
                     }
                 }
@@ -234,6 +293,19 @@ namespace UnionMapCreator
                 {
                     changeHintLabel($"Removed {currentNode.continentList[i]} From {currentNode.name}");
                     currentNode.continentList.Remove(currentNode.continentList[i]);
+                }
+            }
+        }
+        private void RemoveContinentInOtherBox(Continent continent)
+        {
+            for (int i = 0; i < betterListBox3.items.Count; i++)
+            {
+                if (continent.name == betterListBox3.items[i].ItemText)
+                {
+                    BetterListItem item = betterListBox3.items[i];
+                    int index = betterListBox3.items.IndexOf(item);
+                    betterListBox3.removeItem(index);
+                    RemoveItemFromLists(item, betterListBox3);
                 }
             }
         }
@@ -285,8 +357,26 @@ namespace UnionMapCreator
                 if (!string.IsNullOrEmpty(comboBox1.SelectedIndex.ToString()))
                 {
                     Node node = getCurrentNode();
-                    node.continentList.Add(comboBox1.Text);
-                    UpdateListBox();
+                    if (node.continentList.Count == 0)
+                    {
+                        node.continentList.Add(comboBox1.Text);
+                        UpdateListBox();
+                    }
+                    else
+                    {
+                        for (int i = 0; i < node.continentList.Count; i++)
+                        {
+                            if (node.continentList[i] == comboBox1.Text)
+                            {
+                                changeHintLabel("Cannot Add The Same Continent Twice");
+                            }
+                            else
+                            {
+                                node.continentList.Add(comboBox1.Text);
+                                UpdateListBox();
+                            }
+                        }
+                    }
                 }
             }
         }
