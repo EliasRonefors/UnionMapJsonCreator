@@ -18,6 +18,11 @@ namespace UnionMapCreator
         public Image image;
         private float _zoomFactor = 1f;
         private const float ZoomStep = 0.1f;
+        private float _initialScale;
+        private int _mouseX = 0;
+        private int _mouseY = 0;
+        private int _imageOffsetX = 0;
+        private int _imageOffsetY = 0;
 
         string currentNodeName = string.Empty;
         public Form1()
@@ -29,48 +34,72 @@ namespace UnionMapCreator
         {
             image = Image.FromFile(@"UnionMap.png");
 
-            //pictureBox1.Image = image;
             pictureBox1.Paint += PictureBox1_Paint;
-            pictureBox1.SizeMode = PictureBoxSizeMode.Normal;
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
             pictureBox1.MouseWheel += PictureBox1_MouseWheel;
         }
         private void PictureBox1_Paint(object sender, PaintEventArgs e)
         {
-            if (image == null) 
+            if (image == null)
                 return;
 
-            int newWidth = (int)(image.Width * _zoomFactor);
-            int newHeight = (int)(image.Height * _zoomFactor);
+            // Calculate the aspect ratios
+            float imageAspect = (float)image.Width / image.Height;
+            float boxAspect = (float)pictureBox1.ClientSize.Width / pictureBox1.ClientSize.Height;
 
-            if (newWidth <= 0 || newHeight <= 0)
+            // Determine the initial scaling factor to fit the image in the PictureBox
+            if (imageAspect > boxAspect)
             {
-                return;
+                _initialScale = (float)pictureBox1.ClientSize.Width / image.Width;
+            }
+            else
+            {
+                _initialScale = (float)pictureBox1.ClientSize.Height / image.Height;
             }
 
-            Rectangle destRect = new Rectangle(0, 0, pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
-            Rectangle srcRect = new Rectangle(0, 0, newWidth, newHeight);
-            e.Graphics.DrawImage(image, destRect, srcRect, GraphicsUnit.Pixel);
+            // Apply zoom factor to the initial scale
+            float scaleFactor = _initialScale * _zoomFactor;
+
+            // Calculate the new dimensions of the image
+            int newWidth = (int)(image.Width * scaleFactor);
+            int newHeight = (int)(image.Height * scaleFactor);
+
+            // Calculate the offset to center the image
+            int offsetX = (pictureBox1.ClientSize.Width - newWidth) / 2;
+            int offsetY = (pictureBox1.ClientSize.Height - newHeight) / 2;
+
+            // Draw the image with the calculated dimensions and offset
+            e.Graphics.DrawImage(image, offsetX + _imageOffsetX, offsetY + _imageOffsetY, newWidth, newHeight);
         }
         private void PictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
-            float oldZoomFactor = _zoomFactor;
+            // Save the previous zoom factor
+            float previousZoomFactor = _zoomFactor;
+
+            // Update the zoom factor based on mouse wheel scroll
             if (e.Delta > 0)
-                _zoomFactor = Math.Max(0.1f, _zoomFactor - ZoomStep);
+                _zoomFactor += ZoomStep; // Zoom in
             else if (e.Delta < 0)
-                _zoomFactor += ZoomStep;
+                _zoomFactor = Math.Max(0.1f, _zoomFactor - ZoomStep); // Zoom out
 
-            float zoomChange = _zoomFactor / oldZoomFactor;
+            // Calculate the change in zoom factor
+            float zoomChange = _zoomFactor / previousZoomFactor;
 
+            // Adjust the image offset to keep zoom centered on the mouse position
             int mouseX = e.X;
             int mouseY = e.Y;
 
-            Point imagePosition = pictureBox1.PointToClient(new Point(pictureBox1.Left, pictureBox1.Top));
+            // Convert mouse coordinates to image coordinates
+            float imageX = (mouseX - pictureBox1.ClientSize.Width / 2) / _initialScale;
+            float imageY = (mouseY - pictureBox1.ClientSize.Height / 2) / _initialScale;
 
-            int newOffsetX = (int)((mouseX - imagePosition.X) * (1 - zoomChange));
-            int newOffsetY = (int)((mouseY - imagePosition.Y) * (1 - zoomChange));
+            // Calculate the new offset
+            _imageOffsetX -= (int)((imageX - (_imageOffsetX / _zoomFactor)) * (zoomChange - 1));
+            _imageOffsetY -= (int)((imageY - (_imageOffsetY / _zoomFactor)) * (zoomChange - 1));
 
-            pictureBox1.Invalidate(); // Trigger redraw
+            // Trigger redraw
+            pictureBox1.Invalidate();
         }
         protected override void OnMouseWheel(MouseEventArgs e)
         {
