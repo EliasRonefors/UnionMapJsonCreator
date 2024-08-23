@@ -5,6 +5,7 @@ using System.Drawing.Text;
 using System.Reflection;
 using System.Text.Json;
 using System.Windows.Forms;
+using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
@@ -18,7 +19,7 @@ namespace UnionMapCreator
         public Image image;
         private float _zoomFactor = 1f;
         private const float ZoomStep = 0.1f;
-        private float _initialScale;
+        private float _initialScale = 1;
         private int _mouseX = 0;
         private int _mouseY = 0;
         private int _imageOffsetX = 0;
@@ -44,33 +45,19 @@ namespace UnionMapCreator
             if (image == null)
                 return;
 
-            // Calculate the aspect ratios
-            float imageAspect = (float)image.Width / image.Height;
-            float boxAspect = (float)pictureBox1.ClientSize.Width / pictureBox1.ClientSize.Height;
-
-            // Determine the initial scaling factor to fit the image in the PictureBox
-            if (imageAspect > boxAspect)
-            {
-                _initialScale = (float)pictureBox1.ClientSize.Width / image.Width;
-            }
-            else
-            {
-                _initialScale = (float)pictureBox1.ClientSize.Height / image.Height;
-            }
-
-            // Apply zoom factor to the initial scale
-            float scaleFactor = _initialScale * _zoomFactor;
-
-            // Calculate the new dimensions of the image
-            int newWidth = (int)(image.Width * scaleFactor);
-            int newHeight = (int)(image.Height * scaleFactor);
-
-            // Calculate the offset to center the image
-            int offsetX = (pictureBox1.ClientSize.Width - newWidth) / 2;
-            int offsetY = (pictureBox1.ClientSize.Height - newHeight) / 2;
+            var (offsetX, offsetY, newWidth, newHeight, scaleFactor) = CalculateOffset();
 
             // Draw the image with the calculated dimensions and offset
-            e.Graphics.DrawImage(image, offsetX + _imageOffsetX, offsetY + _imageOffsetY, newWidth, newHeight);
+            e.Graphics.DrawImage(image, offsetX, offsetY, newWidth, newHeight);
+
+            foreach (Node node in nodes)
+            {
+                int nodeX = (int)(node.position.X * image.Width * scaleFactor) + offsetX;
+                int nodeY = (int)(node.position.Y * image.Height * scaleFactor) + offsetY;
+
+                e.Graphics.FillEllipse(Brushes.Red, nodeX, nodeY, 10, 10);
+                Debug.WriteLine($"Drawing Node at: ({nodeX}, {nodeY})");
+            }
         }
         private void PictureBox1_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -101,19 +88,46 @@ namespace UnionMapCreator
             // Trigger redraw
             pictureBox1.Invalidate();
         }
-        protected override void OnMouseWheel(MouseEventArgs e)
+        private (int offsetX, int offsetY, int newWidth, int newHeight, float scaleFactor) CalculateOffset()
         {
-            // Ensure that the PictureBox handles the MouseWheel event
-            pictureBox1.Focus();
-            base.OnMouseWheel(e);
-        }
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-            pictureBox1.Invalidate(); // Redraw on resize
+            // Calculate the aspect ratios
+            float imageAspect = (float)image.Width / image.Height;
+            float boxAspect = (float)pictureBox1.ClientSize.Width / pictureBox1.ClientSize.Height;
+
+            // Determine the initial scaling factor to fit the image in the PictureBox
+            if (imageAspect > boxAspect)
+                _initialScale = (float)pictureBox1.ClientSize.Width / image.Width;
+            else
+                _initialScale = (float)pictureBox1.ClientSize.Height / image.Height;
+
+            // Apply zoom factor to the initial scale
+            float scaleFactor = _initialScale * _zoomFactor;
+
+            // Calculate the new dimensions of the image
+            int newWidth = (int)(image.Width * scaleFactor);
+            int newHeight = (int)(image.Height * scaleFactor);
+
+            // Calculate the offset to center the image
+            int offsetX = ((pictureBox1.ClientSize.Width - newWidth) / 2) + _imageOffsetX;
+            int offsetY = ((pictureBox1.ClientSize.Height - newHeight) / 2) + _imageOffsetY;
+
+            return (offsetX, offsetY, newWidth, newHeight, scaleFactor);
         }
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+            foreach (Node node in nodes)
+            {
+                int nodeX = (int)(node.position.X * image.Width * _zoomFactor) + _imageOffsetX;
+                int nodeY = (int)(node.position.Y * image.Height * _zoomFactor) + _imageOffsetY;
+
+                Rectangle nodeBounds = new Rectangle(nodeX - 5, nodeY - 5, 10, 10);
+                if (nodeBounds.Contains(e.Location))
+                {
+                    currentNodeName = node.name;
+                    CurrentNodeLabel.Text = currentNodeName;
+                    return;
+                }
+            }
             if (NodeNameBox.Text != string.Empty)
             {
                 if (nodes.Count == 0)
@@ -133,49 +147,17 @@ namespace UnionMapCreator
         }
         private void addNode(MouseEventArgs e)
         {
-            Point point = e.Location;
-            Point offset = new Point(point.X - 5, point.Y - 5);
+            Debug.WriteLine($"Mouse Position: ({e.X}, {e.Y})");
+            var (offsetX, offsetY, newWidth, newHeight, scaleFactor) = CalculateOffset();
+            float relativeX = (e.X - offsetX) / (image.Width * scaleFactor);
+            float relativeY = (e.Y - offsetY) / (image.Height * scaleFactor);
+            PointF relativePosition = new PointF(relativeX, relativeY);
 
-            PictureBox pb = new PictureBox();
-            pb.Location = offset;
-            pb.Size = new Size(10, 10);
-            pb.MouseDown += new MouseEventHandler(node_Click);
-            pictureBox1.Controls.Add(pb);
+            nodes.Add(new Node(NodeNameBox.Text, relativePosition));
 
-            nodes.Add(new Node(NodeNameBox.Text, pb));
-            Debug.WriteLine($"added Node: {nodes.Count}");
-        }
-        private void node_Click(object sender, MouseEventArgs e)
-        {
-            PictureBox pictureBox = sender as PictureBox;
-            Node currentNode = getCurrentNode();
+            pictureBox1.Invalidate();
 
-            Node clickedNode = getClickedNode(pictureBox);
-
-
-            if (string.IsNullOrEmpty(currentNodeName))
-            {
-                currentNodeName = clickedNode.name;
-                CurrentNodeLabel.Text = "Current Node: " + clickedNode.name;
-                UpdateListBox();
-                changeHintLabel("Select Another Node To Connect");
-            }
-            else if (hasCurrentNode())
-            {
-                if (currentNode == clickedNode)
-                {
-                    changeHintLabel("Cannot Add Current Node To Current Nodes Adjecent Nodes");
-                }
-                else
-                {
-                    if (!ClickedNodeIsConnected(clickedNode))
-                    {
-                        currentNode.adjecentList.Add(clickedNode.name);
-                        UpdateListBox();
-                        changeHintLabel("Nodes Connected Succesfully");
-                    }
-                }
-            }
+            Debug.WriteLine($"Added Node: {nodes.Count} at ({relativeX}, {relativeY})");
         }
         private bool ClickedNodeIsConnected(Node clickedNode)
         {
@@ -189,17 +171,6 @@ namespace UnionMapCreator
                 }
             }
             return false;
-        }
-        private Node getClickedNode(PictureBox pictureBox)
-        {
-            foreach (Node node in nodes)
-            {
-                if (node.pictureBox == pictureBox)
-                {
-                    return node;
-                }
-            }
-            return null;
         }
         private void CurrentNodeLabel_TextChanged(object sender, EventArgs e)
         {

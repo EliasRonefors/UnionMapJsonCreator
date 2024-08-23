@@ -11,15 +11,15 @@ namespace UnionMapCreator
         public string name { get; set; }
         public List<string> continentList = new List<string>();
         public List<string> adjecentList = new List<string>();
-        public readonly PictureBox pictureBox;
+        public readonly PointF position;
 
         public string[] continentNames {  get; set; }
         public string[] adjecentNames { get; set; }
 
-        public Node(string name, PictureBox pictureBox) 
+        public Node(string name, PointF position) 
         { 
             this.name = name;
-            this.pictureBox = pictureBox;
+            this.position = position;
         }
     }
 }
