@@ -11,7 +11,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Header;
 
 namespace UnionMapCreator
 {
-    public partial class Form1 : Form
+    public partial class MainWindowForm : Form
     {
         List<Continent> continents = new List<Continent>();
         List<Node> nodes = new List<Node>();
@@ -26,14 +26,14 @@ namespace UnionMapCreator
         private int _imageOffsetY = 0;
 
         string currentNodeName = string.Empty;
-        public Form1()
+        public MainWindowForm()
         {
             InitializeComponent();
             _zoomFactor = 1.0f; // Start with no zoom
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            image = Image.FromFile(@"UnionMap.png");
+            image = Image.FromFile(@"D:\Github Repositories\UnionMapJsonCreator\UnionMapCreator\UnionMapCreator\Simple_world_map.svg.png");
 
             pictureBox1.Paint += PictureBox1_Paint;
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
@@ -123,7 +123,7 @@ namespace UnionMapCreator
                 Rectangle nodeBounds = new Rectangle(nodeX - 5, nodeY - 5, 10, 10);
                 if (nodeBounds.Contains(e.Location))
                 {
-                    currentNodeName = node.name;
+                    currentNodeName = node.Name;
                     CurrentNodeLabel.Text = currentNodeName;
                     return;
                 }
@@ -164,9 +164,9 @@ namespace UnionMapCreator
             Node currentNode = getCurrentNode();
             for (int i = 0; i < currentNode.adjecentList.Count; i++)
             {
-                if (clickedNode.name == currentNode.adjecentList[i])
+                if (clickedNode.Name == currentNode.adjecentList[i])
                 {
-                    changeHintLabel($"Selected Node {clickedNode.name} Is Already Connected To The Current Node");
+                    changeHintLabel($"Selected Node {clickedNode.Name} Is Already Connected To The Current Node");
                     return true;
                 }
             }
@@ -191,9 +191,9 @@ namespace UnionMapCreator
                     itemControl.ButtonClick += NodeListItemClick;
                     betterListBox2.addItem(itemControl);
                 }
-                for (int j = 0; j < node.continentList.Count; j++)
+                for (int j = 0; j < node.ContinentList.Count; j++)
                 {
-                    itemControl = CreateListItem(node.continentList[j], ref betterListBox3);
+                    itemControl = CreateListItem(node.ContinentList[j], ref betterListBox3);
                     itemControl.ButtonClick += ConnectedContinentListItemClick;
                     betterListBox3.addItem(itemControl);
                 }
@@ -229,32 +229,6 @@ namespace UnionMapCreator
 
             return itemControl;
         }
-        private void CreateButton_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(ContinentNameBox.Text))
-            {
-                changeHintLabel("Please Enter a Name");
-            }
-            else if (string.IsNullOrEmpty(ContinentTroopBox.Text))
-            {
-                changeHintLabel("Please Enter Troop Bonus Amount");
-            }
-            else
-            {
-                if (int.TryParse(ContinentTroopBox.Text, out int result))
-                {
-                    continents.Add(new Continent(ContinentNameBox.Text, int.Parse(ContinentTroopBox.Text)));
-
-                    BetterListItem itemControl = CreateListItem(ContinentNameBox.Text, ref betterListBox1);
-                    itemControl.ButtonClick += ContinentListItemClick;
-                    betterListBox1.addItem(itemControl);
-                }
-                else
-                {
-                    changeHintLabel("Troop Bonus Must Be Of Type Integer");
-                }
-            }
-        }
 
         private void RemoveItemFromLists(BetterListItem clickedItem, BetterListBox box)
         {
@@ -281,7 +255,7 @@ namespace UnionMapCreator
                 {
                     if (clickedItem.ItemText == currentNode.adjecentList[i])
                     {
-                        changeHintLabel($"Connection Between {currentNode.name} And {currentNode.adjecentList[i]} Removed Succesfully");
+                        changeHintLabel($"Connection Between {currentNode.Name} And {currentNode.adjecentList[i]} Removed Succesfully");
                         currentNode.adjecentList.Remove(currentNode.adjecentList[i]);
                     }
                 }
@@ -289,10 +263,10 @@ namespace UnionMapCreator
             if (boxName == "betterListBox3")
             {
                 Node currentNode = getCurrentNode();
-                for (int i = 0; i < currentNode.continentList.Count; i++)
+                for (int i = 0; i < currentNode.ContinentList.Count; i++)
                 {
-                    changeHintLabel($"Removed {currentNode.continentList[i]} From {currentNode.name}");
-                    currentNode.continentList.Remove(currentNode.continentList[i]);
+                    changeHintLabel($"Removed {currentNode.ContinentList[i]} From {currentNode.Name}");
+                    currentNode.ContinentList.Remove(currentNode.ContinentList[i]);
                 }
             }
         }
@@ -308,27 +282,6 @@ namespace UnionMapCreator
                     RemoveItemFromLists(item, betterListBox3);
                 }
             }
-        }
-        private void CreateFileButton_Click(object sender, EventArgs e)
-        {
-            foreach (Node node in nodes)
-            {
-                node.adjecentNames = node.adjecentList.ToArray();
-                node.continentNames = node.continentList.ToArray();
-            }
-
-            Map map = new Map(continents, nodes);
-
-            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            string fileName = "map.json";
-            string filePath = Path.Combine(currentDirectory, fileName);
-
-            string jsonString = JsonSerializer.Serialize(map);
-            Debug.WriteLine(jsonString);
-            File.WriteAllText(filePath, jsonString);
-
-            MessageBox.Show("File saved successfully at " + filePath);
         }
 
         private void comboBox1_DropDown(object sender, EventArgs e)
@@ -357,22 +310,22 @@ namespace UnionMapCreator
                 if (!string.IsNullOrEmpty(comboBox1.SelectedIndex.ToString()))
                 {
                     Node node = getCurrentNode();
-                    if (node.continentList.Count == 0)
+                    if (node.ContinentList.Count == 0)
                     {
-                        node.continentList.Add(comboBox1.Text);
+                        node.ContinentList.Add(comboBox1.Text);
                         UpdateListBox();
                     }
                     else
                     {
-                        for (int i = 0; i < node.continentList.Count; i++)
+                        for (int i = 0; i < node.ContinentList.Count; i++)
                         {
-                            if (node.continentList[i] == comboBox1.Text)
+                            if (node.ContinentList[i] == comboBox1.Text)
                             {
                                 changeHintLabel("Cannot Add The Same Continent Twice");
                             }
                             else
                             {
-                                node.continentList.Add(comboBox1.Text);
+                                node.ContinentList.Add(comboBox1.Text);
                                 UpdateListBox();
                             }
                         }
@@ -390,7 +343,7 @@ namespace UnionMapCreator
             {
                 foreach (Node node in nodes)
                 {
-                    if (currentNodeName == node.name)
+                    if (currentNodeName == node.Name)
                     {
                         return node;
                     }
@@ -406,7 +359,7 @@ namespace UnionMapCreator
         {
             for (int i = 0; i < nodes.Count; i++)
             {
-                if (nodes[i].name == text)
+                if (nodes[i].Name == text)
                 {
                     changeHintLabel("Node Already Exists");
                     return true;
@@ -427,6 +380,42 @@ namespace UnionMapCreator
         {
             currentNodeName = string.Empty;
             CurrentNodeLabel.Text = string.Empty;
+        }
+
+        private void continentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form createContintentForm = new CreateContinentForm(ref continents);
+
+            DialogResult result = createContintentForm.ShowDialog();
+
+            if (result == DialogResult.OK)
+            {
+                BetterListItem itemControl = CreateListItem(continents[continents.Count - 1].name, ref betterListBox1);
+                itemControl.ButtonClick += ContinentListItemClick;
+                betterListBox1.addItem(itemControl);
+            }
+        }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Node node in nodes)
+            {
+                node.adjecentNames = node.adjecentList.ToArray();
+                node.continentNames = node.ContinentList.ToArray();
+            }
+
+            Map map = new Map(continents, nodes);
+
+            string currentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            string fileName = "map.json";
+            string filePath = Path.Combine(currentDirectory, fileName);
+
+            string jsonString = JsonSerializer.Serialize(map);
+            Debug.WriteLine(jsonString);
+            File.WriteAllText(filePath, jsonString);
+
+            MessageBox.Show("File saved successfully at " + filePath);
         }
     }
 }

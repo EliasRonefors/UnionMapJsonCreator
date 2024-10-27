@@ -10,7 +10,7 @@
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param Name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -34,22 +34,21 @@
             // panel1
             // 
             panel1.AutoSize = true;
-            panel1.BackColor = Color.FromArgb(30, 30, 30);
             panel1.BorderStyle = BorderStyle.FixedSingle;
             panel1.Dock = DockStyle.Fill;
             panel1.Location = new Point(0, 0);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(130, 154);
+            panel1.Size = new Size(130, 175);
             panel1.TabIndex = 0;
             // 
             // BetterListBox
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(panel1);
             Name = "BetterListBox";
-            Size = new Size(130, 154);
+            Size = new Size(130, 175);
             ResumeLayout(false);
             PerformLayout();
         }

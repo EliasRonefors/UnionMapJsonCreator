@@ -8,8 +8,8 @@ namespace UnionMapCreator
 {
     public class Node
     {
-        public string name { get; set; }
-        public List<string> continentList = new List<string>();
+        public string Name { get; set; }
+        public List<string> ContinentList = new List<string>();
         public List<string> adjecentList = new List<string>();
         public readonly PointF position;
 
@@ -18,7 +18,7 @@ namespace UnionMapCreator
 
         public Node(string name, PointF position) 
         { 
-            this.name = name;
+            this.Name = name;
             this.position = position;
         }
     }

@@ -8,13 +8,13 @@ namespace UnionMapCreator
 {
     public class Map
     {
-        public List<Continent> continents {  get; set; }
-        public List<Node> territories { get; set; }
+        public List<Continent> Continents {  get; set; }
+        public List<Node> Territories { get; set; }
 
-        public Map(List<Continent> continents, List<Node> territories)
+        public Map(List<Continent> someContinents, List<Node> someTerritories)
         {
-            this.continents = continents;
-            this.territories = territories; 
+            Continents = someContinents;
+            Territories = someTerritories; 
         }
     }
 }

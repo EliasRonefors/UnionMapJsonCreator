@@ -10,7 +10,7 @@
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        /// <param Name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -38,7 +38,7 @@
             label1.Dock = DockStyle.Left;
             label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.Size = new Size(38, 15);
+            label1.Size = new Size(41, 17);
             label1.TabIndex = 0;
             label1.Text = "label1";
             // 
@@ -48,22 +48,21 @@
             button1.Dock = DockStyle.Right;
             button1.FlatAppearance.BorderSize = 0;
             button1.FlatStyle = FlatStyle.Flat;
-            button1.Location = new Point(130, 0);
+            button1.Location = new Point(129, 0);
             button1.Name = "button1";
-            button1.Size = new Size(22, 22);
+            button1.Size = new Size(23, 25);
             button1.TabIndex = 1;
             button1.Text = "-";
             button1.UseVisualStyleBackColor = true;
             // 
             // BetterListItem
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(20, 20, 20);
             Controls.Add(button1);
             Controls.Add(label1);
             Name = "BetterListItem";
-            Size = new Size(152, 22);
+            Size = new Size(152, 25);
             ResumeLayout(false);
             PerformLayout();
         }
